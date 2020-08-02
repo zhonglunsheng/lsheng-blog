@@ -54,6 +54,7 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setTablePrefix(new String[]{"t_blog_", "t_data_"});
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
+        strategy.setExclude(new String[]{"t_blog_user"}); // 排除生成的表
         mpg.setStrategy(strategy);
         strategy.setEntityLombokModel(true);
 
