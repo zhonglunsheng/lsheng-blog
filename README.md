@@ -2,7 +2,7 @@
 
 
 ### 异常记录
-####在使用JDBC连接MySql时报错：You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support
+#### 在使用JDBC连接MySql时报错：You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support
 解决方法：
 在配置文件中的 连接字符串后面加上?serverTimezone=UTC
 
