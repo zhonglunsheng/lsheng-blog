@@ -27,18 +27,22 @@ public class WebFilter implements Filter {
         ObjectMapper jsonMapper = new ObjectMapper();
         ServletOutputStream outputStream = servletResponse.getOutputStream();
         HttpServletRequest requeset = (HttpServletRequest) servletRequest;
-        StringBuffer requestURL = requeset.getRequestURL();
-        if (requestURL.toString().contains("/admin")) {
-            String jwtToken = requeset.getHeader("Authorization");
-            if (StringUtils.isBlank(jwtToken) || JwtUtil.checkJWT(jwtToken) == null) {
-                servletResponse.setContentType("application/json;charset=utf-8");
-                ResponseInfo result = ResponseInfo.createResponseInfoByEnum(ResponseCode.LOGIN_ERROR, null);
-                byte[] resByte = jsonMapper.writeValueAsString(result).getBytes();
-                outputStream.write(resByte);
-                outputStream.flush();
-                outputStream.close();
-            }else {
+        String requestURL = requeset.getRequestURL().toString();
+        if (requestURL.contains("/admin")) {
+            if (requestURL.contains("/admin/user/login")) {
                 filterChain.doFilter(servletRequest, servletResponse);
+            }else {
+                String jwtToken = requeset.getHeader("Authorization");
+                if (StringUtils.isBlank(jwtToken) || JwtUtil.checkJWT(jwtToken) == null) {
+                    servletResponse.setContentType("application/json;charset=utf-8");
+                    ResponseInfo result = ResponseInfo.createResponseInfoByEnum(ResponseCode.LOGIN_ERROR, null);
+                    byte[] resByte = jsonMapper.writeValueAsString(result).getBytes();
+                    outputStream.write(resByte);
+                    outputStream.flush();
+                    outputStream.close();
+                }else {
+                    filterChain.doFilter(servletRequest, servletResponse);
+                }
             }
         } else {
             servletRequest.getRequestDispatcher("/lipop/index.html").forward(servletRequest, servletResponse);
